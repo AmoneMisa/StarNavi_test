@@ -1,4 +1,5 @@
-import session from 'express-session'
+import session from 'express-session';
+import config from './config';
 
 module.exports = {
   /*
@@ -39,8 +40,8 @@ module.exports = {
   },
   modules: [
     ['@nuxtjs/axios', {
-      baseURL: 3000,
-      browserBaseURL: 3000
+      baseURL: config.url.server,
+      browserBaseURL: config.url.client
     }]
   ],
   serverMiddleware: [
@@ -49,8 +50,9 @@ module.exports = {
       resave: true,
       saveUninitialized: true,
       cookie: { maxAge: 24 * 60 * 60 * 1000 },
-      store: sessionStore
     }),
-  ]
+    {path: '/api', handler: '~/api/index.js'}
+  ],
+  watch: ['~/api/index.js']
 };
 
