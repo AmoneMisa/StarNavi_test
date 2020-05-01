@@ -3,12 +3,12 @@
     <div class="content__wrapper">
       <div class="content__game">
         <action-row/>
-        <message :username="getUsername"/>
+        <message :winner="username"/>
         <game-field/>
       </div>
-     <div class="content__leaderboard">
-     <statistic-table :username="getUsername"/>
-     </div>
+      <div class="content__leaderboard">
+        <statistic-table />
+      </div>
     </div>
   </div>
 </template>
@@ -22,8 +22,17 @@
   export default {
     components: {ActionRow, GameField, Message, StatisticTable},
     computed: {
-      getUsername() {
+      username() {
         return this.$store.state.username;
+      },
+      date() {
+        return this.$store.state.date;
+      }
+    },
+    methods :{
+      setDate() {
+        let currentDate = new Date().toLocaleString() + new Date().toLocaleString('en', {month: 'long'});
+        this.$store.commit('setDate', {date: currentDate});
       }
     }
   }

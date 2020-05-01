@@ -1,23 +1,13 @@
 <template>
   <div class="board-data">
-    <div class="board-data__name" v-if="win">{{ username }}</div>
-    <div class="board-data__name" v-else>Computer AI</div>
-    <div class="board-data__date">{{ game_date }}</div>
+    <div class="board-data__name">{{ winner }}</div>
+    <div class="board-data__date">{{ date }}</div>
   </div>
 </template>
 
 <script>
   export default {
-    props: ['username', 'game_date'],
-
-    data() {
-      return {
-        win: true
-      }
-    },
-    methods: {
-
-    }
+    props: ['winner', 'date']
   }
 </script>
 
@@ -28,7 +18,7 @@
     min-width: 380px;
     margin-bottom: 1px;
     height: 60px;
-    padding: 0 10px;
+    padding: 0 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;

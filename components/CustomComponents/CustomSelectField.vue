@@ -1,6 +1,7 @@
 <template>
   <div class="select-field">
-   <vue-select :options="options" :components="{Deselect}" :placeholder="'Pick game mode'" @change="chosenMode"/>
+    <vue-select :options="options" :components="{Deselect}" :placeholder="'Pick game mode'"
+                @input="(e)=> chosenMode(e)"/>
   </div>
 </template>
 
@@ -9,20 +10,22 @@
 
   export default {
     components: {VueSelect},
-    data(){
+    data() {
       return {
         options: ["Easy mode", "Normal mode", "Hard mode"],
-        value: null
+        Deselect: null
       }
     },
-    computed: {
-      chosenMode() {
-        if (this.value === "Easy mode") {
-         return console.log(this.$store.commit("setCurrentMode", {mode: "easyMode"}));
-        } else if (this.value === "Normal mode") {
-          return this.$store.commit("setCurrentMode", {mode: "normalMode"});
-        } else if (this.value === "Hard mode") {
-          return this.$store.commit("setCurrentMode", {mode: "hardMode"});
+    methods: {
+      chosenMode(value) {
+        console.log(value);
+
+        if (value === "Easy mode") {
+          this.$store.commit("setCurrentMode", {mode: "easyMode"});
+        } else if (value === "Normal mode") {
+          this.$store.commit("setCurrentMode", {mode: "normalMode"});
+        } else if (value === "Hard mode") {
+          this.$store.commit("setCurrentMode", {mode: "hardMode"});
         }
       }
     }

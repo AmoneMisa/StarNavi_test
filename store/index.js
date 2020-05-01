@@ -3,7 +3,11 @@ export const state = () => ({
   username: '',
   modes: null,
   isStarted: false,
-  currentModeName: null
+  isGameOver: false,
+  isFirstGame: true,
+  currentModeName: null,
+  winners: null,
+  date: null
 });
 
 export const getters = {
@@ -32,6 +36,18 @@ export const mutations = {
   },
   setIsStarted(state, {isStarted}) {
     state.isStarted = isStarted;
+  },
+  setWinners(state, {winners}) {
+    state.winners = winners;
+  },
+  setDate(state, {date}) {
+    state.date = date;
+  },
+  setGameOver(state, {gameOver}) {
+    state.isGameOver = gameOver;
+  },
+  setFirstGame(state, {isFirstGame}) {
+    state.isFirstGame = isFirstGame;
   }
 };
 
@@ -39,5 +55,9 @@ export const actions = {
   async fetchModes({commit}) {
     let modes = await this.$axios.$get('/api/game-settings');
     commit('setModes', {modes});
+  },
+  async fetchWinners({commit}) {
+    let winners = await  this.$axios.$get('/api/winners');
+    commit('setWinners', {winners})
   }
 };

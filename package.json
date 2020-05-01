@@ -19,6 +19,7 @@
     "express-session": "^1.17.0",
     "nuxt": "^2.0.0",
     "nuxt-session": "^1.0.3",
+    "simplebar-vue": "^1.4.0",
     "vue": "^2.6.11",
     "vue-select": "^3.10.3"
   },

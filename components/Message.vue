@@ -1,13 +1,12 @@
 <template>
   <div class="message-wrapper">
-    <div class="message" v-if="username">{{ username }} won!</div>
-    <div class="message" v-else>Computer AI won!</div>
+    <div class="message" v-if="isGameOver">{{ winner }} won!</div>
   </div>
 </template>
 
 <script>
     export default {
-
+    props: ['winner', 'isGameOver']
     }
 </script>
 
