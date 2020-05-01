@@ -1,13 +1,17 @@
 <template>
   <div class="message-wrapper">
-    <div class="message" v-if="isGameOver">{{ winner }} won!</div>
+    <div class="message" v-if="getWinner !== ''">The {{ getWinner }} won!</div>
   </div>
 </template>
 
 <script>
-    export default {
-    props: ['winner', 'isGameOver']
+  export default {
+    computed: {
+      getWinner() {
+        return this.$store.state.winner;
+      }
     }
+  }
 </script>
 
 <style lang="scss">

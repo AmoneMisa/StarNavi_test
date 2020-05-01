@@ -21,11 +21,22 @@
     components: {CustomSelectField, CustomButton, CustomInput},
     methods: {
       startGame() {
-        if (this.$store.state.username !== "" && this.$store.state.currentModeName !== null) {
+        if (this.$store.state.username === "") {
+          alert("The 'name' field cannot be empty.");
+          return;
+        }
+
+        if (this.$store.state.currentModeName === null) {
+          alert("The 'mode' field cannot be empty.");
+          return;
+        }
+
+        if (!this.$store.state.isFirstGame) {
+          this.$store.commit('clearCell');
+          this.$store.commit('setIsStarted', {isStarted: true});
+        } else {
           this.$store.commit('setIsStarted', {isStarted: true});
           this.$store.commit('setFirstGame', {isFirstGame: false});
-        } else if (this.$store.state.username === "") {
-          alert("The 'name' field cannot be empty.");
         }
       }
     }

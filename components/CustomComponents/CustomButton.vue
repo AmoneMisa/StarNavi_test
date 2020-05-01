@@ -1,7 +1,11 @@
 <template>
   <div class="button-wrapper">
-    <button class="action-button" type="button" @click="() => $emit('start-game')" v-if="isFirstGame">Play</button>
-    <button class="action-button" type="button" @click="() => $emit('start-game')" v-else>Play again</button>
+    <button class="action-button" type="button"
+            @click="() => $emit('start-game')"
+            v-if="isFirstGame" :disabled="isStartGame" :class="isStartGame">Play</button>
+    <button class="action-button" type="button"
+            @click="() => $emit('start-game')"
+            v-else :disabled="isStartGame" :class="{'action-button_disabled': isStartGame}">Play again</button>
   </div>
 </template>
 
@@ -10,6 +14,9 @@
     computed: {
       isFirstGame() {
         return this.$store.state.isFirstGame;
+      },
+      isStartGame() {
+        return this.$store.state.isStarted;
       }
     }
   }

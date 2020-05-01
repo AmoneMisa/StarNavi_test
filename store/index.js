@@ -3,11 +3,10 @@ export const state = () => ({
   username: '',
   modes: null,
   isStarted: false,
-  isGameOver: false,
   isFirstGame: true,
   currentModeName: null,
   winners: null,
-  date: null
+  winner: ''
 });
 
 export const getters = {
@@ -40,14 +39,14 @@ export const mutations = {
   setWinners(state, {winners}) {
     state.winners = winners;
   },
-  setDate(state, {date}) {
-    state.date = date;
-  },
-  setGameOver(state, {gameOver}) {
-    state.isGameOver = gameOver;
-  },
   setFirstGame(state, {isFirstGame}) {
     state.isFirstGame = isFirstGame;
+  },
+  clearCell(state) {
+    state.cell = {};
+  },
+  setWinner(state, {winner}) {
+    state.winner = winner;
   }
 };
 
@@ -57,7 +56,11 @@ export const actions = {
     commit('setModes', {modes});
   },
   async fetchWinners({commit}) {
-    let winners = await  this.$axios.$get('/api/winners');
+    let winners = await this.$axios.$get('/api/winners');
     commit('setWinners', {winners})
+  },
+  async sendWinner({state, commit, dispatch}, {winner, date}) {
+    await this.$axios.$post('/api/winners', {winner, date});
+    await dispatch('fetchWinners');
   }
 };

@@ -14,6 +14,8 @@
 </template>
 
 <script>
+  import moment from "moment";
+
   export default {
     data() {
       return {
@@ -34,6 +36,9 @@
       },
       totalFields() {
         return this.mode.field * this.mode.field;
+      },
+      username() {
+        return this.$store.state.username;
       }
     },
     async created() {
@@ -57,11 +62,17 @@
 
           if (this.totalFields / 2 < this.userPoints) {
             this.$store.commit('setIsStarted', {isStarted: false});
+            this.currentX = null;
+            this.currentY = null;
+            this.$store.commit('setWinner', {winner: this.username});
+            this.sendWinner(this.username);
+
             return;
           }
 
           this.currentX = null;
           this.currentY = null;
+          this.$store.commit('setWinner', {winner: ''});
         }
       },
       nextTick() {
@@ -72,8 +83,15 @@
 
             if (this.totalFields / 2 < this.aiPoints) {
               this.$store.commit('setIsStarted', {isStarted: false});
+              this.currentX = null;
+              this.currentY = null;
+              this.$store.commit('setWinner', {winner: 'Computer'});
+              this.sendWinner('Computer');
+
               return;
             }
+
+            this.$store.commit('setWinner', {winner: ''});
           }
 
           do {
@@ -93,6 +111,10 @@
         } else {
           clearTimeout(this.nextTickId);
         }
+      },
+      async sendWinner(winner) {
+        let date = moment().format('HH:mm; DD MMMM YYYY');
+        await this.$store.dispatch('sendWinner', {date, winner})
       }
     },
     watch: {

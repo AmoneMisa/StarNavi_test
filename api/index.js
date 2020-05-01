@@ -42,4 +42,13 @@ router.get('/winners', async (req, res) => {
   }
 });
 
+router.post('/winners', async (req, res) => {
+  try {
+    let resp = await req.apiClient.post('/winners', req.body);
+    res.json(resp.data);
+  } catch (e) {
+    res.status(e.response.status).json(e.response.data);
+  }
+});
+
 export default router;

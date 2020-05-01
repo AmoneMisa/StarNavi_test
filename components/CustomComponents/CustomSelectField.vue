@@ -18,8 +18,6 @@
     },
     methods: {
       chosenMode(value) {
-        console.log(value);
-
         if (value === "Easy mode") {
           this.$store.commit("setCurrentMode", {mode: "easyMode"});
         } else if (value === "Normal mode") {
@@ -27,6 +25,8 @@
         } else if (value === "Hard mode") {
           this.$store.commit("setCurrentMode", {mode: "hardMode"});
         }
+
+        this.$store.commit('clearCell');
       }
     }
   }

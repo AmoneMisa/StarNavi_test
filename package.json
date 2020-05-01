@@ -17,6 +17,7 @@
     "axios": "^0.19.2",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "moment": "^2.25.0",
     "nuxt": "^2.0.0",
     "nuxt-session": "^1.0.3",
     "simplebar-vue": "^1.4.0",

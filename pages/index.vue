@@ -3,11 +3,11 @@
     <div class="content__wrapper">
       <div class="content__game">
         <action-row/>
-        <message :winner="username"/>
+        <message/>
         <game-field/>
       </div>
       <div class="content__leaderboard">
-        <statistic-table />
+        <statistic-table/>
       </div>
     </div>
   </div>
@@ -20,21 +20,7 @@
   import StatisticTable from "~/components/StatisticTable";
 
   export default {
-    components: {ActionRow, GameField, Message, StatisticTable},
-    computed: {
-      username() {
-        return this.$store.state.username;
-      },
-      date() {
-        return this.$store.state.date;
-      }
-    },
-    methods :{
-      setDate() {
-        let currentDate = new Date().toLocaleString() + new Date().toLocaleString('en', {month: 'long'});
-        this.$store.commit('setDate', {date: currentDate});
-      }
-    }
+    components: {ActionRow, GameField, Message, StatisticTable}
   }
 </script>
 
