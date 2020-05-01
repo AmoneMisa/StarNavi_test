@@ -1,6 +1,6 @@
 <template>
   <div class="select-field">
-   <vue-select :options="options" :components="{Deselect}" :placeholder="'Pick game mode'"/>
+   <vue-select :options="options" :components="{Deselect}" :placeholder="'Pick game mode'" @change="chosenMode"/>
   </div>
 </template>
 
@@ -11,7 +11,19 @@
     components: {VueSelect},
     data(){
       return {
-        options: ["Easy mode", "Normal mode", "Hard mode"]
+        options: ["Easy mode", "Normal mode", "Hard mode"],
+        value: null
+      }
+    },
+    computed: {
+      chosenMode() {
+        if (this.value === "Easy mode") {
+         return console.log(this.$store.commit("setCurrentMode", {mode: "easyMode"}));
+        } else if (this.value === "Normal mode") {
+          return this.$store.commit("setCurrentMode", {mode: "normalMode"});
+        } else if (this.value === "Hard mode") {
+          return this.$store.commit("setCurrentMode", {mode: "hardMode"});
+        }
       }
     }
   }
@@ -37,6 +49,20 @@
 
   .select-field {
     width: 205px;
+  }
+
+  .vs__selected, .vs__search {
+    color: #93a1a7;
+  }
+
+  .v-select {
+    ul {
+      color: #93a1a7;;
+    }
+  }
+
+  .vs1__listbox {
+    color: #93a1a7;
   }
 
   .vs__dropdown-menu {

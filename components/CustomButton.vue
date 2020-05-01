@@ -1,6 +1,6 @@
 <template>
 <div class="button-wrapper">
-  <button class="action-button">{{ button_action }}</button>
+  <button class="action-button" @submit.prevent="startGame()">{{ button_action }}</button>
 </div>
 </template>
 
@@ -10,7 +10,12 @@
           return {
             button_action: "Play"
           }
-        }
+        },
+      methods: {
+       async startGame() {
+        await this.$store.dispatch('game-settings', {timeDelay: this.timeDelay})
+       }
+      }
     }
 </script>
 

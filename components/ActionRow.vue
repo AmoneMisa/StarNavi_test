@@ -23,5 +23,13 @@
 </script>
 
 <style lang="scss">
+    .actions {
+      display: flex;
+      justify-content: center;
+    }
 
+  .actions__item {
+    margin-right: 15px;
+    margin-bottom: 60px;
+  }
 </style>

@@ -16,6 +16,11 @@
       font-size: 14px;
     }
 
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
     *, *::after, *::before {
       box-sizing: border-box;
     }

@@ -33,4 +33,13 @@ router.get('/game-settings', async (req, res) => {
   }
 });
 
+router.get('/winners', async (req, res) => {
+  try {
+    let resp = await req.apiClient.get('/winners');
+    res.json(resp.data);
+  } catch (e) {
+    res.status(e.response.status).json(e.response.data);
+  }
+});
+
 export default router;

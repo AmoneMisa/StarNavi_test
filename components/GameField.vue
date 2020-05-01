@@ -1,13 +1,12 @@
 <template>
-  <table class="game-field">
+  <table class="game-field" v-if="mode">
     <tbody>
-    <tr v-for="y in 5" :key="y" class="game-field__row">
-      <td v-for="x in 5" :key="x" @click="() => setColor(x, y, 'red')"
-         class="game-field__cell"
-          :class="{'cell_red': getColor(x,y) === 'red',
-           'cell_blue': getColor(x,y) === 'blue',
-           'cell_green': getColor(x,y) === 'green'}">
-        {{ getColor(x, y) }}
+    <tr v-for="y in mode.field" :key="y" class="game-field__row">
+      <td v-for="x in mode.field" :key="x" @click="() => click(x - 1, y - 1)"
+          class="game-field__cell"
+          :class="{'cell_red': getColor(x - 1, y - 1) === 'red',
+           'cell_blue': getColor(x - 1, y - 1) === 'blue',
+           'cell_green': getColor(x - 1, y - 1) === 'green'}">
       </td>
     </tr>
     </tbody>
@@ -16,13 +15,33 @@
 
 <script>
   export default {
-    data(){
+    data() {
       return {
         userPoints: 0,
-        AIPoints: 0,
-        currentBlueCell: {x: null, y: null, color: 'blue'},
-        randomCells: []
+        aiPoints: 0,
+        currentX: null,
+        currentY: null,
+        randomCells: [],
+        nextTickId: null
       }
+    },
+    computed: {
+      mode() {
+        return this.$store.getters.mode;
+      },
+      isStarted() {
+        return this.$store.state.isStarted;
+      },
+      totalFields() {
+        return this.mode.field * this.mode.field;
+      }
+    },
+    async created() {
+      if (!this.mode) {
+        await this.$store.dispatch('fetchModes');
+      }
+
+      this.checkIsStarted(this.isStarted);
     },
     methods: {
       getColor(x, y) {
@@ -31,23 +50,54 @@
       setColor(x, y, color) {
         this.$store.commit('setColor', {x, y, color});
       },
-      getRandomCell(x, y, color) {
-        let getXOfCell = Math.floor(Math.random() * (5 - x + 1) + x);
+      click(x, y) {
+        if (this.currentX === x && this.currentY === y) {
+          this.setColor(x, y, 'green');
+          this.userPoints++;
 
-        let getYOfCell = Math.floor(Math.random() * (5 - y + 1) + y);
+          if (this.totalFields / 2 < this.userPoints) {
+            this.$store.commit('setIsStarted', {isStarted: false});
+            return;
+          }
 
-        let randCell = {x: getXOfCell, y: getYOfCell};
-
-        if (this.randomCells.includes(randCell)){
-          return;
-        } else {
-          this.randomCells.push(randCell);
+          this.currentX = null;
+          this.currentY = null;
         }
+      },
+      nextTick() {
+        this.nextTickId = setTimeout(() => {
+          if (this.currentX !== null && this.currentY !== null) {
+            this.setColor(this.currentX, this.currentY, 'red');
+            this.aiPoints++;
 
+            if (this.totalFields / 2 < this.aiPoints) {
+              this.$store.commit('setIsStarted', {isStarted: false});
+              return;
+            }
+          }
 
-        console.log(this.randomCells);
+          do {
+            this.currentX = Math.floor(Math.random() * this.mode.field);
+            this.currentY = Math.floor(Math.random() * this.mode.field);
+          } while (this.getColor(this.currentX, this.currentY));
 
-        this.$store.commit('setColor', {getXOfCell, getYOfCell, color});
+          this.setColor(this.currentX, this.currentY, 'blue');
+          this.nextTick();
+        }, this.mode.delay);
+      },
+      checkIsStarted(isStarted) {
+        if (isStarted) {
+          this.$nextTick(() => {
+            this.nextTick();
+          });
+        } else {
+          clearTimeout(this.nextTickId);
+        }
+      }
+    },
+    watch: {
+      isStarted(value) {
+       this.checkIsStarted(value);
       }
     }
   }
@@ -56,6 +106,7 @@
 <style lang="scss">
   .game-field {
     border-collapse: collapse;
+    margin: 0 auto;
   }
 
   .game-field__row {
@@ -74,6 +125,10 @@
 
   .cell_blue {
     background-color: #7ddfe8;
+  }
+
+  .cell_green {
+    background-color: green;
   }
 
 </style>
